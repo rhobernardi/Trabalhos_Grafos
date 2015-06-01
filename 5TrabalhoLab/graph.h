@@ -95,4 +95,9 @@ int somaArestas(Graph *G);
 int Prim(Graph *G, Vertice V) ;
 
 
+//////////////////////////////////////////// LAB 5 ////////////////////////////////////////////
+
+
+void Dijkstra(Graph, Vertice, Vertice);
+
 #endif

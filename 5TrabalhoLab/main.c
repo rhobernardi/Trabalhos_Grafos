@@ -13,14 +13,14 @@ int main(int argc, char* argv[])
 	char tipo1, tipo2;
 	int numeroV, numeroA, vertice1, vertice2, peso = 1, i = 0, j = 0;
 
-	tipo1 = 'G'; //tipo Grafo
+	tipo1 = 'D'; //tipo Digrafo
 	tipo2 = 'M'; //tipo matriz de adj
 
 	scanf("%d %d", &numeroV, &numeroA);
 
 	createGraph(G, tipo1, tipo2, numeroV, numeroA);
 
-//	IG(G);
+	IG(G);
 
 	for(i = 0; i < numeroA; i++)
 	{
@@ -30,17 +30,16 @@ int main(int argc, char* argv[])
 
 	int origem, destino;
 
-	while(scanf("%d %d", &origem, &destino) != EOF){}
+	while(scanf("%d %d", &origem, &destino) != EOF){
+
+		//printf("origem: %d  destino: %d\n", origem, destino);
+		//Djikstra(origem, destino);
+
+	}
 
 /*printf("\n");
 IG(G);
 printf("\n");*/
-
-	int somaT = somaArestas(G);
-	int somaAG = Prim(G, 0);
-
-	printf("%d %d\n", somaT, somaAG);
-
 
 	return 0;
 }
