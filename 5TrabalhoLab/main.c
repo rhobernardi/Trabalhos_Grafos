@@ -32,8 +32,8 @@ int main(int argc, char* argv[])
 
 	while(scanf("%d %d", &origem, &destino) != EOF){
 
-		//printf("origem: %d  destino: %d\n", origem, destino);
-		//Djikstra(origem, destino);
+		printf("origem: %d  destino: %d\n", origem, destino);
+		Dijkstra(G, origem, destino);
 
 	}
 

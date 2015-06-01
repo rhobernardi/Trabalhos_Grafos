@@ -98,6 +98,15 @@ int Prim(Graph *G, Vertice V) ;
 //////////////////////////////////////////// LAB 5 ////////////////////////////////////////////
 
 
-void Dijkstra(Graph, Vertice, Vertice);
+#define NIL -1
+#define INF -1
+
+void Dijkstra(Graph *, Vertice, Vertice);
+
+int is_Q_empty(int *Q, int tam);
+
+int extrair_min(int *Q, int *index);
+
+void push(int *S, int value, int *index);
 
 #endif
