@@ -20,7 +20,7 @@ int main(int argc, char* argv[])
 
 	createGraph(G, tipo1, tipo2, numeroV, numeroA);
 
-	IG(G);
+	//IG(G);
 
 	for(i = 0; i < numeroA; i++)
 	{
@@ -30,16 +30,13 @@ int main(int argc, char* argv[])
 
 	int origem, destino;
 
+	//IG(G);
+
 	while(scanf("%d %d", &origem, &destino) != EOF){
 
-		printf("origem: %d  destino: %d\n", origem, destino);
+		//printf("origem: %d  destino: %d\n", origem, destino);
 		Dijkstra(G, origem, destino);
-
 	}
-
-/*printf("\n");
-IG(G);
-printf("\n");*/
 
 	return 0;
 }

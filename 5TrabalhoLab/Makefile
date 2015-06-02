@@ -5,7 +5,7 @@ CC = gcc -std=c99
 all: programa
 
 programa: main.c $(SOURCES)
-	$(CC) main.c $(SOURCES) -o programa
+	$(CC) -g main.c $(SOURCES) -o programa
 
 zip:
 	@rm -rf *~ *.o

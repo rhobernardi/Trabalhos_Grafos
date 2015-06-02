@@ -26,7 +26,17 @@ typedef struct g{
 }Graph;
 
 
+typedef struct p{
+	int peso;
+	int destino;
+}No;
 
+
+typedef struct {
+	int tamanho;
+	No **queue;
+	int quantidade;
+}Queue;
 
 
 void createGraph(Graph *G, char t1, char t2, int nvertice, int nedge);
@@ -99,14 +109,18 @@ int Prim(Graph *G, Vertice V) ;
 
 
 #define NIL -1
-#define INF -1
+#define INF 100000
 
 void Dijkstra(Graph *, Vertice, Vertice);
 
-int is_Q_empty(int *Q, int tam);
+Queue *ini_queue(int tam);
 
-int extrair_min(int *Q, int *index);
+void push(Queue *q, No* value);
 
-void push(int *S, int value, int *index);
+void pop(Queue *q);
+
+int empty(Queue *q);
+
+No* top(Queue *q);
 
 #endif

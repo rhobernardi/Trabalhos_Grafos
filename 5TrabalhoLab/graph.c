@@ -475,47 +475,58 @@ int Prim(Graph *G, Vertice V)
 //////////////////////////////////////////// LAB 5 ////////////////////////////////////////////
 
 
-
-int is_Q_empty(int *Q, int tam)
+Queue *ini_queue(int tam)
 {
-	int i, count = 0;
-printf("DEBUG");
-	for(i = 0; i < tam; i++)
-	{
-		if(Q[i] == NIL)
-			count++;
-	}
-printf("DEBUG2");
-	if(count == tam-1)
+	Queue *q = (Queue *) malloc(sizeof(Queue));
+	q->queue = (No **) malloc(tam * sizeof(No*));
+	q->tamanho = tam;
+	q->quantidade = 0;
+
+	return q;
+}
+
+void push(Queue *q, No* value)
+{
+	q->queue[q->quantidade] = value;
+	q->quantidade++;
+}
+
+int empty(Queue *q)
+{
+	if(q->quantidade == 0)
 		return 1;
 
 	else return 0;
 }
 
-
-int extrair_min(int *Q, int *index)
+No* top(Queue *q)
 {
-	int aux = Q[*index];
 
-	Q[*index] = -1;
+	int i, aux = 0; 
+	No* auxn = malloc(sizeof(No));
 
-	*index++;
 
-	return aux;
-}
+	for(i = 0; i < q->quantidade; i++)
+	{
+		if(q->queue[i]->peso < q->queue[aux]->peso)
+		{
+			aux = i;
+		}
+	}
 
-void push(int *S, int value, int *index)
-{
-	S[*index] = value;
+	auxn = q->queue[aux];
 
-	*index++;
+	q->queue[aux] = q->queue[--q->quantidade];
+
+	return auxn;
 }
 
 
 void Dijkstra(Graph *G, Vertice origem, Vertice destino)
 {
-	int i,j, indexQ = 0, indexS = 0, u = -1;
-	int *Q, *S, *d, *pi;
+	int i,j, aux, u = -1;
+	int *S, *d, *pi;
+	Queue *Q;
 
 
 	for(i = 0; i < G->num_vertice; i++)
@@ -526,176 +537,83 @@ void Dijkstra(Graph *G, Vertice origem, Vertice destino)
 				return;
 			}
 
-	Q = (int *) calloc(G->num_vertice, sizeof(int));
+	Q = ini_queue(G->num_vertice);
 	S = (int *) calloc(G->num_vertice, sizeof(int));
 	d = (int *) calloc(G->num_vertice, sizeof(int));
 	pi = (int *) calloc(G->num_vertice, sizeof(int));
 
-
+	int indexQ = 0, indexS = 0;
 
 	for (i = 0; i < G->num_vertice; i++)
 	{
 		d[i] = INF;
 		pi[i] = NIL;
 		S[i] = NIL;
-		Q[i] = i;
 	}
 
 	d[origem] = 0;
 
-	printf("pi:  d:  Q:  S:\n");
+	No* ini = malloc(sizeof(No));
 
-	for (i = 0; i < G->num_vertice; i++)
+	ini->peso = 0;
+	ini->destino = origem;
+
+	push(Q, ini);
+	
+	j=0;
+
+	while(!empty(Q))
 	{
-		printf("%d  %d  %d  %d\n", pi[i], d[i], Q[i], S[i]);
-	}
-
-	while(!is_Q_empty(Q, G->num_vertice))
-	{
-		printf("pi:  d:  Q:  S:  u:");
-
-		for (i = 0; i < G->num_vertice; i++)
-		{
-			printf("%d  %d  %d  %d  %d", pi[i], d[i], Q[i], S[i], u);
-		}
-
-
-		u = extrair_min(Q, &indexQ);
-		push(S, u, &indexS);
+		No* atual = top(Q);
+		S[j++] = atual->destino;
 
 		for(i = 0; i < G->num_vertice; i++)
 		{
-			if( d[i] > (d[u] + G->matriz[u][i]) )
+			if(G->matriz[atual->destino][i] >= 0 && d[i] > d[atual->destino] + G->matriz[atual->destino][i])
 			{
-				d[i] = d[u] + G->matriz[u][i];
-				pi[i] = u;
+				d[i] = d[atual->destino] + G->matriz[atual->destino][i];
+				pi[i] = atual->destino;
+				No* destino = malloc(sizeof(No));;
+
+				destino->peso = G->matriz[atual->destino][i];
+				destino->destino = i;
+				push(Q, destino);
 			}
 		}
 	}
 
+	int *saida = (int *) malloc(G->num_vertice * sizeof(int));
+
+	for(i = 0; i < G->num_vertice; i++)
+		saida[i] = -1;	
+
+	aux = destino;
+
+	for(i = 0; i < G->num_vertice; i++)
+	{	
+		saida[i] = aux;
+		aux = pi[aux];
+
+		if(aux == -1)
+		{
+			break;
+		}		
+	}
+
+	int flag = 0;
+
+	for(i = G->num_vertice-1; i >= 0; i--)
+	{
+		if(saida[i] == origem)
+			flag = 1;
+
+		if(flag == 1 && saida[i] != -1)
+			printf("%d ", saida[i]);
+	}
+	
+	if(flag ==0) printf("\n");
+
+
 	free(Q); free(S); free(d); free(pi); 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-
-void Dijkstra(int s)
-{
-	int i,j,w,k,l, vmin, dmin;
-	int *dist;
-	int *pred;
-	int pos_prox[MaxDim];
-
-
-    // Inicializacao: d_temp contem um estimativa pessimista
-	// da distancia de s a v
-
-	for (i = 0; i < G->num_vertice; i++)
-	{
-		dist[i] = -1;
-		pos_prox[i] = 0;
-		pred[i] = -1;
-	}
-
-    // Caso Base - conhece-se o vértice mais próximo de s
-	// (ele mesmo).
-
-	d_temp[s] = 0;
-	pred[s] = 0;
-
-	k = 1;
-	pos_prox[s] = k;
-
-
-	// Agora pode-se atualizar as estimativas pessimistas
-	// das distancias.
-
-	for(l=1; l<=CardP[s]; l++)
-	{
-		v = LisAdjP[s][l];
-		if (d_temp[v] > d_temp[s]+Dist[s][v])
-		{
-           d_temp[v] = d_temp[s]+Dist[s][v];
-		   pred[v] = s;
-		}
-	}
-
-
-    // Passo Indutivo
-	// Conhece-se os k vértices mais próximos de s
-	// Então conhece-se os k+1 vertices mais próximos de s
-
-    //  O k+1-ésimo mais próximo é o que possui o menor d_temp
-
-    for (k=2; k<=Dim; k++)
-	{
-       // Encontra o k-ésimo vértice mais próximo de s
-
-	   vmin = 0;
-	   dmin = DistInfinita;
-       for (v=1; v<=Dim; v++)
-	   {
-		   if ((d_temp[v] < dmin) && (pos_prox[v] == 0))
-		   {
-               vmin = v;
-               dmin = d_temp[v];
-		   }
-	   }
-
-
-       printf(" Vmin: %d  DistMin: %d\n", vmin, dmin);
-
-	   pos_prox[vmin] = k;
-
-
-	  // Atualiza-se as estimativas pessimistas
-	  // das distancias.
-
-   	  for(l=1; l<=CardP[vmin]; l++)
-	  {
-	 	 v = LisAdjP[vmin][l];
-		 if ( (pos_prox[v] == 0) && (d_temp[v] > d_temp[vmin] + Dist[vmin][v])) //d_temp[vmin]+Dist[s][v])
-		 {
-            d_temp[v] = d_temp[vmin] + Dist[vmin][v]; //d_temp[vmin]+Dist[s][v];
-		    pred[v] = vmin;
-		 }
-	  }
-
-	}
-
-	// Distancias e caminhos mais curtos
-
-	printf(" DIJKSTRA -- CMC a partir de %d \n",s);
-	for (v=1; v<=Dim; v++)
-	{
-		printf(" %d D=%d %d-esimo mais proximo Caminho: ",
-			v, d_temp[v], pos_prox[v]);
-		w = v;
-		while (pred[w] > 0)
-		{
-			printf(" %d ",pred[w]);
-			w = pred[w];
-		}
-		printf("\n");
-	}
-
-	for (v=1; v<=Dim; v++)
-	{
-			printf("Aresta: %d %d %d\n",v ,pred[v], Dist[v][pred[v]]);
-    }
-
-}*/
