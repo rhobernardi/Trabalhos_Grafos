@@ -530,20 +530,18 @@ void Dijkstra(Graph *G, Vertice origem, Vertice destino)
 	Queue *Q;
 
 
-	for(i = 0; i < G->num_vertice; i++)
+	/*for(i = 0; i < G->num_vertice; i++)
 		for(j = 0; j < G->num_vertice; j++)
 			if(G->matriz[i][j] != (-1) && G->matriz[i][j] < 0)
 			{
 				printf("\nARESTA COM PESO NEGATIVO\n");
 				return;
-			}
+			}*/
 
 	Q = ini_queue(G->num_vertice);
 	S = (int *) calloc(G->num_vertice, sizeof(int));
 	d = (int *) calloc(G->num_vertice, sizeof(int));
 	pi = (int *) calloc(G->num_vertice, sizeof(int));
-
-	int indexQ = 0, indexS = 0;
 
 	for (i = 0; i < G->num_vertice; i++)
 	{
@@ -617,6 +615,7 @@ void Dijkstra(Graph *G, Vertice origem, Vertice destino)
 	
 	printf("\n");
 
-	//free(Q); free(S); free(d); free(pi); 
+
+	/*free(S);*/ /*free(d);*/ /*free(pi); */
 
 }
