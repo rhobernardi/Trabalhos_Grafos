@@ -501,9 +501,8 @@ int empty(Queue *q)
 
 No* top(Queue *q)
 {
-
 	int i, aux = 0; 
-	No* auxn = malloc(sizeof(No));
+	No* auxn = (No*) malloc(sizeof(No));
 
 
 	for(i = 0; i < q->quantidade; i++)
@@ -516,7 +515,9 @@ No* top(Queue *q)
 
 	auxn = q->queue[aux];
 
-	q->queue[aux] = q->queue[--q->quantidade];
+	q->quantidade--;
+
+	q->queue[aux] = q->queue[q->quantidade];
 
 	return auxn;
 }
@@ -602,6 +603,9 @@ void Dijkstra(Graph *G, Vertice origem, Vertice destino)
 
 	int flag = 0;
 
+	// for(i = G->num_vertice-1; i >= 0; i--)
+	// 	printf("%d ", pi[i]);
+
 	for(i = G->num_vertice-1; i >= 0; i--)
 	{
 		if(saida[i] == origem)
@@ -611,9 +615,8 @@ void Dijkstra(Graph *G, Vertice origem, Vertice destino)
 			printf("%d ", saida[i]);
 	}
 	
-	if(flag ==0) printf("\n");
+	printf("\n");
 
-
-	free(Q); free(S); free(d); free(pi); 
+	//free(Q); free(S); free(d); free(pi); 
 
 }

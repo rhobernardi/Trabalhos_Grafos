@@ -109,7 +109,7 @@ int Prim(Graph *G, Vertice V) ;
 
 
 #define NIL -1
-#define INF 100000
+#define INF 10000000
 
 void Dijkstra(Graph *, Vertice, Vertice);
 
